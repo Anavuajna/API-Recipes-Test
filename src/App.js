@@ -24,15 +24,16 @@ function App() {
   // }, [])
 
     useEffect (() => {
-    fetchData() 
+      const fetchData = async () => {
+        const response = await fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${wordSubmit}&app_id=${MY_ID}&app_key=${MY_KYE}`); // подставляем ${wordSubmit} - именно по этому запросу от пользователя (ингридиента) будут выводиться рецепты
+        const data = await response.json();
+        setMyRecipes(data.hits); // смена состояния связана с результатом fetch запроса, будет отображать полученные рецепты
+        console.log(response, data.hits)
+      }
+    fetchData(); 
   }, [wordSubmit]); // связываем useEffect с состоянием wordSubmit - когда нажимаем энтер, вызывается useEffect
 
-  const fetchData = async () => {
-    const response = await fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${wordSubmit}&app_id=${MY_ID}&app_key=${MY_KYE}`); // подставляем ${wordSubmit} - именно по этому запросу от пользователя (ингридиента) будут выводиться рецепты
-    const data = await response.json();
-    setMyRecipes(data.hits); // смена состояния связана с результатом fetch запроса, будет отображать полученные рецепты
-    console.log(response, data.hits)
-  }
+
 
   const myRecipeSearch = (e) => {
     setMySearch(e.target.value)
